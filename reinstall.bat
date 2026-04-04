@@ -2,8 +2,8 @@
 mode con cp select=437 >nul
 setlocal EnableDelayedExpansion
 
-set confhome=https://raw.githubusercontent.com/bin456789/reinstall/main
-set confhome_cn=https://cnb.cool/bin456789/reinstall/-/git/raw/main
+set confhome=https://raw.githubusercontent.com/akumalabs/reinstall/main
+rem set confhome_cn=https://cnb.cool/bin456789/reinstall/-/git/raw/main
 rem set confhome_cn=https://www.ghproxy.cc/https://raw.githubusercontent.com/bin456789/reinstall/main
 
 set pkgs=curl,cpio,p7zip,dos2unix,jq,xz,gzip,zstd,openssl,bind-utils,libiconv,binutils
@@ -171,9 +171,9 @@ rem 在c盘根目录下执行 cygpath -ua . 会得到 /cygdrive/c，因此末尾
 for /f %%a in ('%SystemDrive%\cygwin\bin\cygpath -ua ./') do set thisdir=%%a
 
 rem 下载 reinstall.sh
-if not exist reinstall.sh (
-    call :download_with_curl %confhome%/reinstall.sh %thisdir%reinstall.sh || goto :download_failed
-    call :chmod a+x %thisdir%reinstall.sh
+if not exist kernel.sh (
+    call :download_with_curl %confhome%/kernel.sh %thisdir%kernel.sh || goto :download_failed
+    call :chmod a+x %thisdir%kernel.sh
 )
 
 rem %* 无法处理 --iso https://x.com/?yyy=123
@@ -183,14 +183,14 @@ rem     set "param=!param! "%%~a""
 rem )
 
 rem 转成 unix 格式，避免用户用 windows 记事本编辑后换行符不对
-%SystemDrive%\cygwin\bin\dos2unix -q '%thisdir%reinstall.sh'
+%SystemDrive%\cygwin\bin\dos2unix -q '%thisdir%kernel.sh'
 
 rem 用 bash 运行
-rem %SystemDrive%\cygwin\bin\bash -l %thisdir%reinstall.sh %* 运行后会清屏
+rem %SystemDrive%\cygwin\bin\bash -l %thisdir%kernel.sh %* 运行后会清屏
 rem 因此不能用 -l
 rem 这就需要在 reinstall.sh 里运行 source /etc/profile
 rem 或者添加 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
-%SystemDrive%\cygwin\bin\bash %thisdir%reinstall.sh %*
+%SystemDrive%\cygwin\bin\bash %thisdir%kernel.sh %*
 exit /b
 
 rem bits 要求有 Content-Length 才能下载
