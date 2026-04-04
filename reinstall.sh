@@ -4904,14 +4904,15 @@ elif [ "$distro" = fnos ]; then
     echo "安装完成后不支持 SSH 登录。"
     echo "你需要尽快在 http://SERVER_IP:5666 配置账号密码。"
 else
-    echo "Reboot to start the installation."
+    echo "System will be reboot in 10 seconds to start the installation"
 fi
 
-if is_in_windows; then
-    echo 'You can run this command to reboot:'
-    echo 'shutdown /r /t 0'
-fi
-
-echo
 echo "If you want to revert all changes made by this script, run \"$reinstall_____ reset\""
 echo
+if is_in_windows; then
+    echo 'System will reboot now'
+    shutdown /r /t 10
+else
+    echo 'System will reboot now'
+    sleep 10; reboot
+fi
