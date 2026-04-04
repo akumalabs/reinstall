@@ -54,6 +54,7 @@ curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh 
 # echo "  14) Windows 10 Pro Lite"
 # echo "  15) Windows 11 Pro Lite"
   echo "  16) Netboot"
+  echo "  17) Windows 10 LTSC (Template DD)
   echo "  99) Custom DD image"
   echo "  0) Exit"
   echo -ne "\nYour option: "
@@ -75,6 +76,7 @@ curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh 
 #   14) bash reinstall.sh windows --image-name='Windows 10 Pro' --iso='https://iso.akumavm.com/tiny10.iso' --password Akuma12345 --allow-ping ;;
 #   15) bash reinstall.sh windows --image-name='Windows 11 Pro' --iso='https://iso.akumavm.com/tiny11.iso' --password Akuma12345 --allow-ping ;;
     16) bash reinstall.sh netboot.xyz ;;
+    17) bash reinstall.sh dd --img='https://cp.akumavm.com/win-10-ltsc.xz' --password Akuma12345 --allow-ping ;;
     99)
       echo -e "\n"
       read -r -p "Custom DD image URL: " imgURL
