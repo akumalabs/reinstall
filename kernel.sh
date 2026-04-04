@@ -34,7 +34,7 @@ function CopyRight() {
 function Start() {
   CopyRight
   
-curl -O https://raw.githubusercontent.com/akumalabs/launch/main/reinstall.sh || wget -O reinstall.sh $_
+curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh || wget -O reinstall.sh $_
 
 
   echo -e "\nPlease select an OS:"
