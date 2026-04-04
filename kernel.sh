@@ -54,7 +54,7 @@ curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh 
 # echo "  14) Windows 10 Pro Lite"
 # echo "  15) Windows 11 Pro Lite"
   echo "  16) Netboot"
-  echo "  17) Windows 10 LTSC (Template DD)
+  echo "  17) Windows 10 LTSC (Template DD)"
   echo "  99) Custom DD image"
   echo "  0) Exit"
   echo -ne "\nYour option: "
