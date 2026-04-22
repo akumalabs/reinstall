@@ -51,10 +51,12 @@ curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh 
   echo "  11) Windows Server 2019 DC"
   echo "  12) Windows Server 2022 DC"
   echo "  13) Windows Server 2025 DC"
-# echo "  14) Windows 10 Pro Lite"
-# echo "  15) Windows 11 Pro Lite"
-  echo "  16) Netboot"
-  echo "  17) Windows 10 LTSC (Template DD)"
+  echo "  14) Windows Tiny 10 (BIOS)"
+  echo "  15) Windows Tiny 11 (BIOS)"
+  echo "  16) Windows Tiny 10 (UEFI)"
+  echo "  17) Windows Tiny 11 (UEFI)"
+  echo "  18) Netboot"
+  echo "  19) Windows 10 LTSC (Template DD)"
   echo "  99) Custom DD image"
   echo "  0) Exit"
   echo -ne "\nYour option: "
@@ -73,10 +75,12 @@ curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh 
     11) bash reinstall.sh windows --image-name='Windows Server 2019 SERVERDATACENTER' --iso='https://go.microsoft.com/fwlink/p/?LinkID=2195167' --password Akuma12345 --allow-ping ;;
     12) bash reinstall.sh windows --image-name='Windows Server 2022 SERVERDATACENTER' --iso='https://go.microsoft.com/fwlink/p/?LinkID=2195280' --password Akuma12345 --allow-ping ;;
     13) bash reinstall.sh windows --image-name='Windows Server 2025 SERVERDATACENTER' --iso='https://go.microsoft.com/fwlink/p/?LinkID=2293312' --password Akuma12345 --allow-ping ;;
-#   14) bash reinstall.sh windows --image-name='Windows 10 Pro' --iso='https://iso.akumavm.com/tiny10.iso' --password Akuma12345 --allow-ping ;;
-#   15) bash reinstall.sh windows --image-name='Windows 11 Pro' --iso='https://iso.akumavm.com/tiny11.iso' --password Akuma12345 --allow-ping ;;
-    16) bash reinstall.sh netboot.xyz ;;
-    17) bash reinstall.sh dd --img='https://cp.akumalabs.com/storage/images/win-10-ltsc.xz' --password Akuma12345 --allow-ping ;;
+    14) bash reinstall.sh dd --img='https://dl.lamp.sh/vhd/tiny10_23h2.xz' --password Akuma12345 --allow-ping ;;
+    15) bash reinstall.sh dd --img='https://dl.lamp.sh/vhd/tiny11_23h2.xz' --password Akuma12345 --allow-ping ;;
+    16) bash reinstall.sh dd --img='https://dl.lamp.sh/vhd/tiny10_23h2_uefi.xz' --password Akuma12345 --allow-ping ;;
+    17) bash reinstall.sh dd --img='https://dl.lamp.sh/vhd/tiny11_23h2_uefi.xz' --password Akuma12345 --allow-ping ;;
+    18) bash reinstall.sh netboot.xyz ;;
+    19) bash reinstall.sh dd --img='https://cp.akumalabs.com/storage/images/win-10-ltsc.xz' --password Akuma12345 --allow-ping ;;
     99)
       echo -e "\n"
       read -r -p "Custom DD image URL: " imgURL
