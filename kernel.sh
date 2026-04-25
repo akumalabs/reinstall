@@ -44,8 +44,8 @@ curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh 
   echo "  4) Latest Alpine Linux"
   echo "  5) Latest CentOS"
   echo "  6) Kali Linux"
-  echo "  7) Windows 10 Pro"
-  echo "  8) Windows 11 Pro"
+  #echo "  7) Windows 10 Pro"
+  #echo "  8) Windows 11 Pro"
   echo "  9) Windows Server 2012 R2 DC"
   echo "  10) Windows Server 2016 DC"
   echo "  11) Windows Server 2019 DC"
@@ -56,7 +56,7 @@ curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh 
   echo "  16) Windows Tiny 10 (UEFI)"
   echo "  17) Windows Tiny 11 (UEFI)"
   echo "  18) Netboot"
-  echo "  19) Windows 10 LTSC (Template DD)"
+  echo "  19) Windows Server 2019 (Template AdOp)"
   echo "  99) Custom DD image"
   echo "  0) Exit"
   echo -ne "\nYour option: "
@@ -68,8 +68,8 @@ curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh 
     4) bash reinstall.sh alpine --password 123@@@ ;;
     5) bash reinstall.sh centos --password 123@@@ ;;
     6) bash reinstall.sh kali --password 123@@@ ;;
-    7) bash reinstall.sh windows --image-name='Windows 10 Pro' --iso='https://cloclo53.datacloudmail.ru/public/get/qjip4r6AhW1Hd5gCXn5yqHK9eB8LLgRwVygJDHCrUwhHwsCHgA6vLkqEC8oTiXjtAo14p2Pc5jNKxNbEM5YJwK4dWwk3ZEFp2Y4iE4nSdczKp4pRSuTnEFMmDMbcjAiSEcyNPwp57tTK3qURpxYNsk9BzE9rmKpetXPAs2crrfKftmsKPwmvuPikYJdA7VfPArd2FojrYfcsbdwUFYoTu7WhZwEVGJLzsB4uS4UXzfvn2YcpveJcvAyGC6zeGi7Ndjh4TKit61eb2Y7Ku35w2ZwTRyhvP76Wt3vRz235PAryNiTi69goztfXhsVNJpiRU2kYJUVrPRL2CeVQANK1isGKsVJNPEpdguw3WjUGvYQR9gygBCMSWCjh2rmgb35KyUcioSBkUCDidxh4ENwUq72/no/en_windows_10_version_22h2_with_update_19045.7184_aio_16in1_x64_v26.04.14_by_adguard.iso' --password Akuma12345 --allow-ping ;;
-    8) bash reinstall.sh windows --image-name='Windows 11 Pro' --iso='https://cloclo58.datacloudmail.ru/public/get/qjip4r6AhW1Hd5gFF4H4keY6UwyzNG5B1WR44x5m3MH5q91PVfmLvDmuU5aDsByLqKSitRRkiYM1a1kG53qcUYtWFTsjQCbwSoQ6pqyuY2fKxCDaFAuFiG8z4bNy7MiMPx3svSTk4nek3NjygCVQbdcVJtcE7Si5EpkZDVf26EhWGVgjop748aTwHSRaW5EohiHzRRT2ktMfCPxo8xLMy2MGgaymuCgZedCNGoMGt615tyjgJ3Hc4JAvCxd9df9T5bDQSRyTT17vL3P2zRJce9MycRji5JCP6C9p9bhHtFi1fiQ98L58jYMpCf7jGWnz5nEF9XkthXYiKQu7eEmhs1zQhWvxqgZjwbTDVnTMWkwESN9Wtf4sEfPuPdMKtzeGPLsw2Ls7ayfJg5sNBurQ1Rk/no/en_windows_11_version_25h2_with_update_26200.8246_aio_19in1_x64_v26.04.14_by_adguard.iso' --password Akuma12345 --allow-ping ;;
+    #7) bash reinstall.sh windows --image-name='Windows 10 Pro' --iso='https://cloclo53.datacloudmail.ru/public/get/qjip4r6AhW1Hd5gCXn5yqHK9eB8LLgRwVygJDHCrUwhHwsCHgA6vLkqEC8oTiXjtAo14p2Pc5jNKxNbEM5YJwK4dWwk3ZEFp2Y4iE4nSdczKp4pRSuTnEFMmDMbcjAiSEcyNPwp57tTK3qURpxYNsk9BzE9rmKpetXPAs2crrfKftmsKPwmvuPikYJdA7VfPArd2FojrYfcsbdwUFYoTu7WhZwEVGJLzsB4uS4UXzfvn2YcpveJcvAyGC6zeGi7Ndjh4TKit61eb2Y7Ku35w2ZwTRyhvP76Wt3vRz235PAryNiTi69goztfXhsVNJpiRU2kYJUVrPRL2CeVQANK1isGKsVJNPEpdguw3WjUGvYQR9gygBCMSWCjh2rmgb35KyUcioSBkUCDidxh4ENwUq72/no/en_windows_10_version_22h2_with_update_19045.7184_aio_16in1_x64_v26.04.14_by_adguard.iso' --password Akuma12345 --allow-ping ;;
+    #8) bash reinstall.sh windows --image-name='Windows 11 Pro' --iso='https://cloclo58.datacloudmail.ru/public/get/qjip4r6AhW1Hd5gFF4H4keY6UwyzNG5B1WR44x5m3MH5q91PVfmLvDmuU5aDsByLqKSitRRkiYM1a1kG53qcUYtWFTsjQCbwSoQ6pqyuY2fKxCDaFAuFiG8z4bNy7MiMPx3svSTk4nek3NjygCVQbdcVJtcE7Si5EpkZDVf26EhWGVgjop748aTwHSRaW5EohiHzRRT2ktMfCPxo8xLMy2MGgaymuCgZedCNGoMGt615tyjgJ3Hc4JAvCxd9df9T5bDQSRyTT17vL3P2zRJce9MycRji5JCP6C9p9bhHtFi1fiQ98L58jYMpCf7jGWnz5nEF9XkthXYiKQu7eEmhs1zQhWvxqgZjwbTDVnTMWkwESN9Wtf4sEfPuPdMKtzeGPLsw2Ls7ayfJg5sNBurQ1Rk/no/en_windows_11_version_25h2_with_update_26200.8246_aio_19in1_x64_v26.04.14_by_adguard.iso' --password Akuma12345 --allow-ping ;;
     9) bash reinstall.sh windows --image-name='Windows Server 2012 R2 SERVERDATACENTER' --iso='https://go.microsoft.com/fwlink/p/?LinkID=2195443' --password Akuma12345 --allow-ping ;;
     10) bash reinstall.sh windows --image-name='Windows Server 2016 SERVERDATACENTER' --iso='https://go.microsoft.com/fwlink/p/?LinkID=2195174' --password Akuma12345 --allow-ping ;;
     11) bash reinstall.sh windows --image-name='Windows Server 2019 SERVERDATACENTER' --iso='https://go.microsoft.com/fwlink/p/?LinkID=2195167' --password Akuma12345 --allow-ping ;;
@@ -80,7 +80,7 @@ curl -O https://raw.githubusercontent.com/akumalabs/reinstall/main/reinstall.sh 
     16) bash reinstall.sh dd --img='https://dl.lamp.sh/vhd/tiny10_23h2_uefi.xz' --password Akuma12345 --allow-ping ;;
     17) bash reinstall.sh dd --img='https://dl.lamp.sh/vhd/tiny11_23h2_uefi.xz' --password Akuma12345 --allow-ping ;;
     18) bash reinstall.sh netboot.xyz ;;
-    19) bash reinstall.sh dd --img='https://cp.akumalabs.com/storage/images/win-10-ltsc.xz' --password Akuma12345 --allow-ping ;;
+    19) bash reinstall.sh dd --img='https://cp.akumalabs.com/storage/images/win2019.xz' --password Akuma12345 --allow-ping ;;
     99)
       echo -e "\n"
       read -r -p "Custom DD image URL: " imgURL
