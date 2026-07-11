@@ -11,6 +11,7 @@ rem set ipv6_dns1=::1
 rem set ipv6_dns2=::2
 
 @echo off
+setlocal enabledelayedexpansion
 mode con cp select=437 >nul
 
 rem 禁用 IPv6 地址标识符的随机化，防止 IPv6 和后台面板不一致
@@ -222,6 +223,7 @@ if !errorlevel! neq 0 (
 
 echo.
 echo !OSVersion! is successfully activated for 180 days.
+endlocal
 
 rem 删除此脚本
 del "%~f0"
