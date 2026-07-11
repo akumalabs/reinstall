@@ -75,6 +75,11 @@ REM Remove memory dump files
 del /q /f "C:\Windows\*.DMP" 2>nul
 for /d %%D in ("C:\Windows\Minidump") do rd /s /q "%%D" 2>nul
 
+REM Download and install Qemu Agent
+powershell -Command "(New-Object System.Net.WebClient).DownloadFile('https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.285-1/virtio-win-guest-tools.exe', 'C:\Windows\Temp\virtio-win-guest-tools.exe')" <NUL
+cmd /c C:\Windows\Temp\virtio-win-guest-tools.exe /quiet /norestart
+del C:\Windows\Temp\virtio-win-guest-tools.exe
+
 REM Download and run system optimizer
 powershell -Command "(New-Object System.Net.WebClient).DownloadFile('https://install.virtfusion.net/optimize.exe', 'C:\Windows\Temp\optimize.exe')" <NUL
 if exist "C:\Windows\Temp\optimize.exe" (
@@ -83,8 +88,19 @@ if exist "C:\Windows\Temp\optimize.exe" (
     del C:\Windows\Temp\optimize.exe
 )
 
+REM Download and Install Google Chrome Silently ---
+echo Downloading Google Chrome Enterprise Installer...
+powershell -Command "(New-Object System.Net.WebClient).DownloadFile('https://dl.google.com/chrome/install/googlechromestandaloneenterprise64.msi', 'C:\Windows\Temp\chrome_installer.msi')" <NUL
+if exist "C:\Windows\Temp\chrome_installer.msi" (
+    echo Installing Google Chrome...
+    msiexec /i "C:\Windows\Temp\chrome_installer.msi" /qn /norestart
+    del "C:\Windows\Temp\chrome_installer.msi"
+)
+
 REM Set account lockout threshold to 0 (explicitly run via sysnative if needed)
 net accounts /lockoutthreshold:0
+
+net accounts | find /i "Lockout threshold"
 
 echo Detecting Windows Server version...
 echo.
@@ -178,5 +194,5 @@ echo.
 echo Activation sequence completed.
 endlocal
 
-rem 自毁脚本
+rem Delete script file after execution
 del "%~f0"
