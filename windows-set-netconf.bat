@@ -16,8 +16,8 @@ mode con cp select=437 >nul
 rem 禁用 IPv6 地址标识符的随机化，防止 IPv6 和后台面板不一致
 netsh interface ipv6 set global randomizeidentifiers=disabled
 
-rem 检查是否定义了 MAC 地址
-if not defined mac_addr goto :del
+rem --- NEW LOGIC: Skip ONLY network config if mac_addr isn't defined ---
+if not defined mac_addr goto :skip_network
 
 rem vista 没有自带 powershell
 rem win11 24h2 安装后有 wmic，但是过一段时间会自动删除，因此有的 dd 镜像没有 wmic
@@ -95,6 +95,8 @@ if defined id (
         )
     )
 )
+:skip_network
+rem --- Network block ends; the rest of the script will now run safely ---
 
 REM Remove memory dump files
 del /q /f "C:\Windows\*.DMP"
@@ -221,6 +223,5 @@ if !errorlevel! neq 0 (
 echo.
 echo !OSVersion! is successfully activated for 180 days.
 
-:del
 rem 删除此脚本
 del "%~f0"
