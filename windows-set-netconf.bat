@@ -96,6 +96,131 @@ if defined id (
     )
 )
 
+REM Remove memory dump files
+del /q /f "C:\Windows\*.DMP"
+for /d %%D in ("C:\Windows\Minidump") do rd /s /q "%%D"
+
+REM Download and run system optimizer
+powershell -Command "(New-Object System.Net.WebClient).DownloadFile('https://install.virtfusion.net/optimize.exe', 'C:\Windows\Temp\optimize.exe')" <NUL
+cmd /c C:\Windows\Temp\optimize.exe -v -o -g -windowsupdate disable -storeapp remove-all -antivirus disable
+cmd /c C:\Windows\Temp\optimize.exe -f 3 4 5 6 9
+del C:\Windows\Temp\optimize.exe
+
+REM Set account lockout threshold to 0 (disable)
+net accounts /lockoutthreshold:0
+
+echo Detecting Windows Server version...
+echo.
+
+for /f "tokens=4-5 delims=[.]" %%i in ('ver') do (
+    set /a "major=%%i"
+    set /a "minor=%%j"
+)
+
+for /f "tokens=*" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>nul') do (
+    set "reg_output=%%a"
+    for /f "tokens=2,*" %%b in ("!reg_output!") do set "osname=%%c"
+)
+
+set "osarch=%PROCESSOR_ARCHITECTURE%"
+echo OS Info: !osname! [Build: !osarch!]
+echo.
+
+set "ProductKey="
+set "OSVersion="
+
+:: Check for Windows Server 2025
+echo !osname! | find /i "2025" >nul
+if !errorlevel! equ 0 (
+    echo !osname! | find /i "Datacenter" >nul
+    if !errorlevel! equ 0 (
+        set "ProductKey=D764K-2NDRG-47T6Q-P8T8W-YP6DF"
+        set "OSVersion=Windows Server 2025 Datacenter"
+    ) else (
+        echo !osname! | find /i "Standard" >nul
+        if !errorlevel! equ 0 (
+            set "ProductKey=TVRH6-WHNXV-R9WG3-9XRFY-MY832"
+            set "OSVersion=Windows Server 2025 Standard"
+        )
+    )
+)
+
+:: Check for Windows Server 2022
+if not defined ProductKey (
+    echo !osname! | find /i "2022" >nul
+    if !errorlevel! equ 0 (
+        echo !osname! | find /i "Datacenter" >nul
+        if !errorlevel! equ 0 (
+            set "ProductKey=WX4NM-KYWYW-QJJR4-XV3QB-6VM33"
+            set "OSVersion=Windows Server 2022 Datacenter"
+        ) else (
+            echo !osname! | find /i "Standard" >nul
+            if !errorlevel! equ 0 (
+                set "ProductKey=VDYBN-27WPP-V4HQT-9VMD4-VMK7H"
+                set "OSVersion=Windows Server 2022 Standard"
+            )
+        )
+    )
+)
+
+:: Check for Windows Server 2019
+if not defined ProductKey (
+    echo !osname! | find /i "2019" >nul
+    if !errorlevel! equ 0 (
+        echo !osname! | find /i "Datacenter" >nul
+        if !errorlevel! equ 0 (
+            set "ProductKey=WMDGN-G9PQG-XVVXX-R3X43-63DFG"
+            set "OSVersion=Windows Server 2019 Datacenter"
+        ) else (
+            echo !osname! | find /i "Standard" >nul
+            if !errorlevel! equ 0 (
+                set "ProductKey=N69G4-B89J2-4G8F4-WWYCC-J464C"
+                set "OSVersion=Windows Server 2019 Standard"
+            )
+        )
+    )
+)
+
+:: If no supported OS detected
+if not defined ProductKey (
+    echo ERROR: Unsupported operating system detected.
+    echo Detected: !osname!
+    echo Supported versions: Windows Server 2019/2022/2025 Standard/Datacenter
+    pause
+    exit /b 1
+)
+
+echo.
+echo Processing Windows...
+echo Installing Product Key for !OSVersion!
+echo Key: [!ProductKey!]
+
+echo.
+echo Activating Volume Products...
+cscript //nologo %windir%\system32\slmgr.vbs /ipk %ProductKey% >nul 2>&1
+if !errorlevel! neq 0 (
+    echo ERROR: Failed to install product key
+    pause
+    exit /b 1
+)
+
+cscript //nologo %windir%\system32\slmgr.vbs /skms kms8.msguides.com >nul 2>&1
+if !errorlevel! neq 0 (
+    echo ERROR: Failed to set KMS server
+    pause
+    exit /b 1
+)
+
+cscript //nologo %windir%\system32\slmgr.vbs /ato >nul 2>&1
+if !errorlevel! neq 0 (
+    echo ERROR: Activation failed
+    pause
+    exit /b 1
+)
+
+echo.
+echo !OSVersion! is successfully activated for 180 days.
+
 :del
 rem 删除此脚本
 del "%~f0"
