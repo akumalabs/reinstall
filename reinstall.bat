@@ -6,8 +6,8 @@ set confhome=https://raw.githubusercontent.com/akumalabs/reinstall/main
 rem set confhome_cn=https://cnb.cool/bin456789/reinstall/-/git/raw/main
 rem set confhome_cn=https://www.ghproxy.cc/https://raw.githubusercontent.com/bin456789/reinstall/main
 
-set pkgs=curl,cpio,p7zip,dos2unix,jq,xz,gzip,zstd,openssl,bind-utils,libiconv,binutils
-set cmds=curl,cpio,p7zip,dos2unix,jq,xz,gzip,zstd,openssl,nslookup,iconv,ar
+set pkgs=bash,ncurses,curl,cpio,p7zip,dos2unix,jq,xz,gzip,zstd,openssl,bind-utils,libiconv,binutils
+set cmds=bash,clear,curl,cpio,p7zip,dos2unix,jq,xz,gzip,zstd,openssl,nslookup,iconv,ar
 
 rem 65001 代码页会乱码
 
