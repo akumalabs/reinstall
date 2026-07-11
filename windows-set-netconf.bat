@@ -97,10 +97,22 @@ if exist "C:\Windows\Temp\chrome_installer.msi" (
     del "C:\Windows\Temp\chrome_installer.msi"
 )
 
+REM Uninstall Internet Explorer if it exists ---
+echo Checking for Internet Explorer optional feature...
+dism /online /Get-FeatureInfo /FeatureName:Internet-Explorer-Optional-amd64 >nul 2>&1
+if !errorlevel! equ 0 (
+    echo Removing Internet Explorer...
+    dism /online /Disable-Feature /FeatureName:Internet-Explorer-Optional-amd64 /norestart >nul 2>&1
+)
+
 REM Set account lockout threshold to 0 (explicitly run via sysnative if needed)
 net accounts /lockoutthreshold:0
 
 net accounts | find /i "Lockout threshold"
+
+REM --- NEW FEATURE: Disable Ctrl+Alt+Del requirement on login ---
+echo Disabling Ctrl+Alt+Del secure sign-in...
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableCAD /t REG_DWORD /d 1 /f >nul 2>&1
 
 echo Detecting Windows Server version...
 echo.
