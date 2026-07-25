@@ -2966,34 +2966,29 @@ add_efi_entry_in_linux() {
 
     install_pkg efibootmgr
 
-    # 只取第一个
-    # 因为不用关心是否为 efi 分区，只要是 fat/vfat 格式的分区即可添加到引导
-    # 这里用了管道导致 get_maybe_efi_dirs_in_linux 里面的 error_and_exit 不生效
     efi_part=$(get_maybe_efi_dirs_in_linux | head -1 | grep .)
     dist_dir=$efi_part/EFI/reinstall
     basename=$(basename $source)
     download_or_copy_file "$source" "$dist_dir/$basename"
 
-    # 原系统可能不是用 grub 引导，因此不一定有 grub-probe
     if false; then
         grub_probe="$(command -v grub-probe grub2-probe | head -1)"
         dev_part="$("$grub_probe" -t device "$dist_dir")"
     else
         install_pkg findmnt
-        # arch findmnt 会得到
-        # systemd-1
-        # /dev/sda2
-        dev_part=$(findmnt -T "$dist_dir" -no SOURCE | grep '^/dev/')
+        dev_part=$(findmnt -T "$dist_dir" -no SOURCE | grep '^/dev/' | head -n 1)
     fi
 
-    set -- efibootmgr --create-only \
-        --disk "/dev/$(get_disk_by_part $dev_part)" \
-        --part "$(get_part_num_by_part $dev_part)" \
-        --label "$(get_entry_name)" \
-        --loader "\\EFI\\reinstall\\$basename"
+    # Ensure disk and part variables are trimmed strings
+    local disk="/dev/$(get_disk_by_part "$dev_part" | tr -d '\r\n')"
+    local part="$(get_part_num_by_part "$dev_part" | tr -d '\r\n')"
+    local label="$(get_entry_name | tr -d '\r\n')"
+    local loader="\\EFI\\reinstall\\$basename"
 
-    if ! res=$("$@"); then
-        echo "Command: $*"
+    # Capture output directly without using 'set --'
+    echo "Adding EFI entry for $disk part $part..."
+    if ! res=$(efibootmgr --create-only --disk "$disk" --part "$part" --label "$label" --loader "$loader" 2>&1); then
+        echo "Command: efibootmgr --create-only --disk \"$disk\" --part \"$part\" --label \"$label\" --loader \"$loader\""
         echo "$res"
         error_and_exit "Could not add efi entry."
     fi
