@@ -2916,7 +2916,9 @@ get_maybe_efi_dirs_in_linux() {
 get_disk_by_part() {
     dev_part=$1
     install_pkg lsblk >&2
-    lsblk -rn --inverse "$dev_part" | grep -w disk | awk '{print $1}'
+    lsblk -Pno NAME,TYPE --inverse "$dev_part" |
+        grep 'TYPE="disk"' |
+        sed -n 's/^NAME="\([^"]*\)".*/\1/p'
 }
 
 get_part_num_by_part() {
@@ -2963,7 +2965,6 @@ add_efi_entry_in_linux() {
     local source=$1
 
     info "Add efi entry in linux"
-
     install_pkg efibootmgr
 
     efi_part=$(get_maybe_efi_dirs_in_linux | head -1 | grep .)
@@ -2971,31 +2972,38 @@ add_efi_entry_in_linux() {
     basename=$(basename $source)
     download_or_copy_file "$source" "$dist_dir/$basename"
 
-    if false; then
-        grub_probe="$(command -v grub-probe grub2-probe | head -1)"
-        dev_part="$("$grub_probe" -t device "$dist_dir")"
-    else
-        install_pkg findmnt
-        dev_part=$(findmnt -T "$dist_dir" -no SOURCE | grep '^/dev/' | head -n 1)
+    install_pkg findmnt
+    dev_part=$(findmnt -T "$dist_dir" -no SOURCE | grep '^/dev/' | head -n 1)
+
+    # boot partition may be backed by multiple physical disks
+    # (mdraid mirror / lvm / btrfs raid) - add an entry on each one
+    local disks
+    disks="$(get_disk_by_part "$dev_part" | sort -u | grep .)"
+    if [ -z "$disks" ]; then
+        error_and_exit "Could not determine underlying disk for $dev_part."
     fi
 
-    # Fix: pipe get_disk_by_part to 'head -n 1' to guarantee only one disk name is returned
-    local raw_disk="$(get_disk_by_part "$dev_part" | head -n 1 | tr -d '\r\n')"
-    local disk="/dev/${raw_disk}"
     local part="$(get_part_num_by_part "$dev_part" | head -n 1 | tr -d '\r\n')"
     local label="$(get_entry_name | tr -d '\r\n')"
     local loader="\\EFI\\reinstall\\$basename"
+    local first_id=
 
-    # Capture output directly without using 'set --'
-    echo "Adding EFI entry for $disk part $part..."
-    if ! res=$(efibootmgr --create-only --disk "$disk" --part "$part" --label "$label" --loader "$loader" 2>&1); then
-        echo "Command: efibootmgr --create-only --disk \"$disk\" --part \"$part\" --label \"$label\" --loader \"$loader\""
-        echo "$res"
-        error_and_exit "Could not add efi entry."
-    fi
+    while read -r raw_disk; do
+        [ -z "$raw_disk" ] && continue
+        local disk="/dev/${raw_disk}"
 
-    id=$(echo "$res" | grep_efi_entry | tail -1 | grep_efi_index | grep .)
-    efibootmgr --bootnext "$id"
+        echo "Adding EFI entry for $disk part $part..."
+        if ! res=$(efibootmgr --create-only --disk "$disk" --part "$part" --label "$label" --loader "$loader" 2>&1); then
+            echo "Command: efibootmgr --create-only --disk \"$disk\" --part \"$part\" --label \"$label\" --loader \"$loader\""
+            echo "$res"
+            error_and_exit "Could not add efi entry."
+        fi
+
+        id=$(echo "$res" | grep_efi_entry | tail -1 | grep_efi_index | grep .)
+        [ -z "$first_id" ] && first_id=$id
+    done <<<"$disks"
+
+    efibootmgr --bootnext "$first_id"
 }
 
 get_grub_efi_filename() {
