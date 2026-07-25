@@ -2979,9 +2979,10 @@ add_efi_entry_in_linux() {
         dev_part=$(findmnt -T "$dist_dir" -no SOURCE | grep '^/dev/' | head -n 1)
     fi
 
-    # Ensure disk and part variables are trimmed strings
-    local disk="/dev/$(get_disk_by_part "$dev_part" | tr -d '\r\n')"
-    local part="$(get_part_num_by_part "$dev_part" | tr -d '\r\n')"
+    # Fix: pipe get_disk_by_part to 'head -n 1' to guarantee only one disk name is returned
+    local raw_disk="$(get_disk_by_part "$dev_part" | head -n 1 | tr -d '\r\n')"
+    local disk="/dev/${raw_disk}"
+    local part="$(get_part_num_by_part "$dev_part" | head -n 1 | tr -d '\r\n')"
     local label="$(get_entry_name | tr -d '\r\n')"
     local loader="\\EFI\\reinstall\\$basename"
 
