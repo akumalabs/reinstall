@@ -105,7 +105,7 @@ powershell -NoLogo -NoProfile -Command ^
 
 if exist "C:\Windows\Temp\optimize.exe" (
     echo [%date% %time%] Running optimize.exe... >> "%LOGFILE%"
-    cmd /c "C:\Windows\Temp\optimize.exe" -v -o -g -windowsupdate disable -storeapp remove-all -antivirus disable >> "%LOGFILE%" 2>&1
+    cmd /c "C:\Windows\Temp\optimize.exe" -v -o -g -windowsupdate disable -storeapp remove-all >> "%LOGFILE%" 2>&1
     cmd /c "C:\Windows\Temp\optimize.exe" -f 3 4 5 6 9 >> "%LOGFILE%" 2>&1
     del "C:\Windows\Temp\optimize.exe"
 ) else (
@@ -233,6 +233,3 @@ endlocal
 
 rem Delete script file after execution
 del "%~f0"
-
-rem Reboot to finalize DISM/edition/feature/optimizer changes
-shutdown /r /t 10 /c "Provisioning complete. Restarting to finalize configuration." /f
