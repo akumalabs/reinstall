@@ -7,14 +7,16 @@
 [![Lines of Code](https://aschey.tech/tokei/github/bin456789/reinstall?category=code&label=Lines%20of%20Code&style=flat-square)](https://github.com/aschey/vercel-tokei)
 <!-- [![Lines of Code](https://tokei.rs/b1/github/bin456789/reinstall?category=code&label=Lines%20of%20Code&style=flat-square)](https://github.com/XAMPPRocky/tokei_rs) -->
 
+<a href="https://trendshift.io/repositories/14732"><img src="https://trendshift.io/api/badge/repositories/14732" alt="bin456789%2Freinstall | Trendshift" width="250" height="55"/></a>
+
 一键 VPS 系统重装脚本 [English](README.en.md)
 
 ## 介绍
 
-- 一键重装到 Linux，支持 19 种常见发行版
-- 一键重装到 Windows，使用官方原版 ISO 而非自制镜像，脚本支持自动查找 ISO 链接、自动安装 `VirtIO` 等公有云驱动
+- 一键重装到 Linux，支持 20 种常见发行版
+- 一键重装到 Windows，使用官方原版 ISO 而非自制镜像，支持自动查找 ISO 链接、自动安装 `VirtIO` 等公有云驱动
 - 支持任意方向重装，即 `Linux to Linux`、`Linux to Windows`、`Windows to Windows`、`Windows to Linux`
-- 自动设置 IP，智能设置动静态，支持 `/32`、`/128`、`网关不在子网范围内`、`纯 IPv6`、`IPv4/IPv6 在不同的网卡`
+- 自动设置 IP，智能设置动静态，支持 `/32`、`/128`、`网关不在子网范围内`、`纯 IPv6`、`IPv4/IPv6 在不同网卡`
 - 专门适配低配小鸡，比官方 netboot 需要更少的内存
 - 全程用分区表 ID 识别硬盘，确保不会写错硬盘
 - 支持 BIOS、EFI 引导，支持 ARM 服务器
@@ -49,21 +51,21 @@
 | 系统                                                                                                                                                                                                                                                                                                                                                                   | 版本                                  | 内存      | 硬盘         |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | --------- | ------------ |
 | <img width="16" height="16" src="https://www.alpinelinux.org/alpine-logo.ico" /> Alpine                                                                                                                                                                                                                                                                                | 3.21, 3.22, 3.23, 3.24                | 256 MB    | 1 GB         |
-| <img width="16" height="16" src="https://www.debian.org/favicon.ico" /> Debian                                                                                                                                                                                                                                                                                         | 9, 10, 11, 12, 13                     | 256 MB    | 1 ~ 1.5 GB ^ |
-| <img width="16" height="16" src="https://github.com/bin456789/reinstall/assets/7548515/f74b3d5b-085f-4df3-bcc9-8a9bd80bb16d" /> Kali                                                                                                                                                                                                                                   | 滚动                                  | 256 MB    | 1 ~ 1.5 GB ^ |
+| <img width="16" height="16" src="https://www.debian.org/favicon.ico" /> Debian                                                                                                                                                                                                                                                                                         | 9 ELTS - 11 ELTS, 12, 13              | 256 MB    | 1 ~ 1.5 GB ^ |
+| <img width="16" height="16" src="https://github.com/bin456789/reinstall/assets/7548515/f74b3d5b-085f-4df3-bcc9-8a9bd80bb16d" /> Kali                                                                                                                                                                                                                                   | Last-Snapshot, Rolling (滚动)         | 256 MB    | 1 ~ 1.5 GB ^ |
 | <img width="16" height="16" src="https://documentation.ubuntu.com/server/_static/favicon.png" /> Ubuntu                                                                                                                                                                                                                                                                | 18.04 LTS - 26.04 LTS                 | 512 MB \* | 2 GB         |
 | <img width="16" height="16" src="https://img.alicdn.com/imgextra/i1/O1CN01oJnJZg1yK4RzI4Rx2_!!6000000006559-2-tps-118-118.png" /> Anolis                                                                                                                                                                                                                               | 7, 8, 23                              | 512 MB \* | 5 GB         |
 | <img width="16" height="16" src="https://www.redhat.com/favicon.ico" /> RHEL &nbsp;<img width="16" height="16" src="https://almalinux.org/fav/favicon.ico" /> AlmaLinux &nbsp;<img width="16" height="16" src="https://rockylinux.org/favicon.png" /> Rocky &nbsp;<img width="16" height="16" src="https://www.oracle.com/asset/web/favicons/favicon-32.png" /> Oracle | 8, 9, 10                              | 512 MB \* | 5 GB         |
 | <img width="16" height="16" src="https://opencloudos.org/qq.ico" /> OpenCloudOS                                                                                                                                                                                                                                                                                        | 8, 9, Stream 23                       | 512 MB \* | 5 GB         |
 | <img width="16" height="16" src="https://www.centos.org/assets/icons/favicon.svg" /> CentOS Stream                                                                                                                                                                                                                                                                     | 9, 10                                 | 512 MB \* | 5 GB         |
 | <img width="16" height="16" src="https://fedoraproject.org/favicon.ico" /> Fedora                                                                                                                                                                                                                                                                                      | 43, 44                                | 512 MB \* | 5 GB         |
-| <img width="16" height="16" src="https://www.openeuler.org/favicon.ico" /> openEuler                                                                                                                                                                                                                                                                                   | 20.03 LTS - 24.03 LTS                 | 512 MB \* | 5 GB         |
+| <img width="16" height="16" src="https://www.openeuler.org/favicon.ico" /> openEuler                                                                                                                                                                                                                                                                                   | 20.03 LTS - 24.03 LTS, 26.09          | 512 MB \* | 5 GB         |
 | <img width="16" height="16" src="https://static.opensuse.org/favicon.ico" /> openSUSE                                                                                                                                                                                                                                                                                  | Leap 16.0, Tumbleweed (滚动)          | 512 MB \* | 5 GB         |
 | <img width="16" height="16" src="https://nixos.org/favicon.svg" /> NixOS                                                                                                                                                                                                                                                                                               | 26.05                                 | 512 MB    | 5 GB         |
-| <img width="16" height="16" src="https://archlinux.org/static/favicon.png" /> Arch                                                                                                                                                                                                                                                                                     | 滚动                                  | 512 MB    | 5 GB         |
+| <img width="16" height="16" src="https://archlinux.org/static/favicon.png" /> Arch Linux / Arch Linux ARM                                                                                                                                                                                                                                                              | 滚动                                  | 512 MB    | 5 GB         |
 | <img width="16" height="16" src="https://www.gentoo.org/assets/img/logo/gentoo-g.png" /> Gentoo                                                                                                                                                                                                                                                                        | 滚动                                  | 512 MB    | 5 GB         |
 | <img width="16" height="16" src="https://aosc.io/distros/aosc-os.svg" /> 安同 OS                                                                                                                                                                                                                                                                                       | 滚动                                  | 512 MB    | 5 GB         |
-| <img width="16" height="16" src="https://www.fnnas.com/favicon.ico" /> 飞牛 fnOS &nbsp;<img width="16" height="16" src="https://fygonas.com/favicon.ico" /> FygoOS                                                                                                                                                                                                     | 1                                     | 512 MB    | 8 GB         |
+| <img width="16" height="16" src="https://www.fnnas.com/favicon.ico" /> 飞牛 fnOS &nbsp;<img width="16" height="16" src="https://fygonas.com/favicon.ico" /> FygoOS                                                                                                                                                                                                     | 1                                     | 512 MB    | 10 GB        |
 | <img width="16" height="16" src="https://blogs.windows.com/wp-content/uploads/prod/2022/09/cropped-Windows11IconTransparent512-32x32.png" /> Windows (DD)                                                                                                                                                                                                              | 任何                                  | 512 MB    | 取决于镜像   |
 | <img width="16" height="16" src="https://blogs.windows.com/wp-content/uploads/prod/2022/09/cropped-Windows11IconTransparent512-32x32.png" /> Windows (ISO)                                                                                                                                                                                                             | Vista, 7, 8.x (Server 2008 - 2012 R2) | 512 MB    | 25 GB        |
 | <img width="16" height="16" src="https://blogs.windows.com/wp-content/uploads/prod/2022/09/cropped-Windows11IconTransparent512-32x32.png" /> Windows (ISO)                                                                                                                                                                                                             | 10, 11 (Server 2016 - 2025)           | 1 GB      | 25 GB        |
@@ -154,6 +156,7 @@ certutil -urlcache -f -split https://cnb.cool/bin456789/reinstall/-/git/raw/main
 - 安装 Red Hat 时需填写 <https://access.redhat.com/downloads/content/rhel> 得到的 `qcow2` 镜像链接，也可以安装其它类 RHEL 系统的 `qcow2`，例如 `Alibaba Cloud Linux` 和 `TencentOS Server`
 - 重装后如需修改 SSH 端口或者改成密钥登录，注意还要修改 `/etc/ssh/sshd_config.d/` 里面的文件
 - 为了快速安装，重装时不会对新系统进行更新，请在重装后自行更新
+- 安装飞牛 fnOS/FygoOS 时设置的用户名、密码、密钥仅用于安装期间登录 SSH 查看日志，不会应用到新系统。系统安装后需到后台面板 <http://IP:5666> 创建用户和开启 SSH
 
 ```bash
 bash reinstall.sh anolis      7|8|23
@@ -168,10 +171,10 @@ bash reinstall.sh anolis      7|8|23
                   fedora      43|44
                   debian      9|10|11|12|13
                   opensuse    16.0|tumbleweed
-                  openeuler   20.03|22.03|24.03
                   alpine      3.21|3.22|3.23|3.24
+                  kali        last-snapshot|rolling
+                  openeuler   20.03|22.03|24.03|26.09
                   ubuntu      18.04|20.04|22.04|24.04|26.04 [--minimal]
-                  kali
                   arch
                   gentoo
                   aosc
@@ -186,6 +189,7 @@ bash reinstall.sh anolis      7|8|23
 - `--ssh-port PORT` 修改 SSH 端口
 - `--web-port PORT` 修改 Web 端口（安装期间观察日志用）
 - `--frpc-config PATH` 添加 frpc 内网穿透，参数填配置文件的本地路径或 HTTP 链接
+- `--no-cloud-kernel` 不使用云内核，避免部分机器黑屏/花屏，适用于 Debian、Ubuntu、Alpine、openSUSE
 - `--hold 1` 仅重启到安装环境，不运行安装，用于 SSH 登录验证网络连通性
 - `--hold 2` 安装结束后不重启，用于 SSH 登录修改系统内容，Debian/Kali 会挂载在 `/target`，其它系统会挂载在 `/os`
 
@@ -356,8 +360,8 @@ bash reinstall.sh netboot.xyz
 
 #### 方法 1: 让脚本自动查找 ISO
 
-- 脚本会从 <https://massgrave.dev/genuine-installation-media> 查找 ISO，该网站专门提供官方 ISO 下载
-- 只支持查找 Windows 10, 11, Server 2019, 2022, 2025 的 ISO
+- 脚本会从 <https://ntriver.org/download-windows-office> 查找 ISO，该网站专门收集官方 ISO 镜像
+- 默认查找 64 位系统镜像，除非指定了 `--bit 32`
 
 ```bash
 bash reinstall.sh windows \
@@ -366,49 +370,160 @@ bash reinstall.sh windows \
 ```
 
 <details>
-<summary>支持的语言</summary>
+<summary>--image-name 列表</summary>
+
+以下版本支持自动查找，其它版本请用方法 2 手动指定 ISO 链接安装
 
 ```text
-ar-sa
-bg-bg
-cs-cz
-da-dk
-de-de
-el-gr
-en-gb
-en-us
-es-es
-es-mx
-et-ee
-fi-fi
-fr-ca
-fr-fr
-he-il
-hr-hr
-hu-hu
-it-it
-ja-jp
-ko-kr
-lt-lt
-lv-lv
-nb-no
-nl-nl
-pl-pl
-pt-pt
-pt-br
-ro-ro
-ru-ru
-sk-sk
-sl-si
-sr-latn-rs
-sv-se
-th-th
-tr-tr
-uk-ua
-zh-cn
-zh-hk
-zh-tw
+Windows Vista Starter
+Windows Vista HomeBasic
+Windows Vista HomePremium
+Windows Vista Business
+Windows Vista Ultimate
+Windows Vista Enterprise
+
+Windows 7 Starter
+Windows 7 HomeBasic
+Windows 7 HomePremium
+Windows 7 Professional
+Windows 7 Ultimate
+Windows 7 Enterprise
+
+Windows 8
+Windows 8 Pro
+Windows 8 Enterprise
+
+Windows 8.1
+Windows 8.1 Pro
+Windows 8.1 Enterprise
+
+Windows 10 Home
+Windows 10 Home Single Language
+Windows 10 Pro
+Windows 10 Pro Education
+Windows 10 Pro for Workstations
+Windows 10 Education
+Windows 10 Enterprise
+Windows 10 Enterprise 2015 LTSB
+Windows 10 Enterprise 2016 LTSB
+Windows 10 Enterprise LTSC 2019
+Windows 10 Enterprise LTSC 2021
+Windows 10 IoT Enterprise
+Windows 10 IoT Enterprise 2015 LTSB
+Windows 10 IoT Enterprise 2016 LTSB
+Windows 10 IoT Enterprise LTSC 2019
+Windows 10 IoT Enterprise LTSC 2021
+
+Windows 11 Home
+Windows 11 Home Single Language
+Windows 11 Pro
+Windows 11 Pro Education
+Windows 11 Pro for Workstations
+Windows 11 Education
+Windows 11 Enterprise
+Windows 11 Enterprise LTSC 2024
+Windows 11 IoT Enterprise
+Windows 11 IoT Enterprise LTSC 2024
+Windows 11 IoT Enterprise Subscription
+Windows 11 IoT Enterprise Subscription LTSC 2024
+
+Windows Longhorn ServerWeb
+Windows Longhorn ServerWebCore
+Windows Longhorn ServerStandard
+Windows Longhorn ServerStandardCore
+Windows Longhorn ServerEnterprise
+Windows Longhorn ServerEnterpriseCore
+Windows Longhorn ServerDatacenter
+Windows Longhorn ServerDatacenterCore
+
+Windows Server 2008 R2 ServerWeb
+Windows Server 2008 R2 ServerWebCore
+Windows Server 2008 R2 ServerStandard
+Windows Server 2008 R2 ServerStandardCore
+Windows Server 2008 R2 ServerEnterprise
+Windows Server 2008 R2 ServerEnterpriseCore
+Windows Server 2008 R2 ServerDatacenter
+Windows Server 2008 R2 ServerDatacenterCore
+
+Windows Server 2012 ServerStandard
+Windows Server 2012 ServerStandardCore
+Windows Server 2012 ServerDatacenter
+Windows Server 2012 ServerDatacenterCore
+
+Windows Server 2012 R2 ServerStandard
+Windows Server 2012 R2 ServerStandardCore
+Windows Server 2012 R2 ServerDatacenter
+Windows Server 2012 R2 ServerDatacenterCore
+
+Windows Server 2016 ServerStandard
+Windows Server 2016 ServerStandardCore
+Windows Server 2016 ServerDatacenter
+Windows Server 2016 ServerDatacenterCore
+
+Windows Server 2019 ServerStandard
+Windows Server 2019 ServerStandardCore
+Windows Server 2019 ServerDatacenter
+Windows Server 2019 ServerDatacenterCore
+
+Windows Server 2022 ServerStandard
+Windows Server 2022 ServerStandardCore
+Windows Server 2022 ServerDatacenter
+Windows Server 2022 ServerDatacenterCore
+
+Windows Server 2025 ServerStandard
+Windows Server 2025 ServerStandardCore
+Windows Server 2025 ServerDatacenter
+Windows Server 2025 ServerDatacenterCore
 ```
+
+</details>
+
+<details>
+<summary>--lang 列表</summary>
+
+支持这三种语言代码格式，不区分大小写
+
+| CC 格式 | CC-CC 格式 | 语言 |
+| - | - | - |
+| ar | ar-sa | Arabic |
+| bg | bg-bg | Bulgarian |
+| cs | cs-cz | Czech |
+| da | da-dk | Danish |
+| de | de-de | German |
+| el | el-gr | Greek |
+| gb | en-gb | Eng_Intl |
+| en | en-us | English |
+| es | es-es | Spanish |
+| mx | es-mx | Spanish_Latam |
+| et | et-ee | Estonian |
+| fi | fi-fi | Finnish |
+| | fr-ca | FrenchCanadian |
+| fr | fr-fr | French |
+| he | he-il | Hebrew |
+| hr | hr-hr | Croatian |
+| hu | hu-hu | Hungarian |
+| it | it-it | Italian |
+| ja | ja-jp | Japanese |
+| ko | ko-kr | Korean |
+| lt | lt-lt | Lithuanian |
+| lv | lv-lv | Latvian |
+| no | nb-no | Norwegian |
+| nl | nl-nl | Dutch |
+| pl | pl-pl | Polish |
+| pp | pt-pt | Portuguese |
+| pt | pt-br | Brazilian |
+| ro | ro-ro | Romanian |
+| ru | ru-ru | Russian |
+| sk | sk-sk | Slovak |
+| sl | sl-si | Slovenian |
+| sr | sr-latn / sr-latn-rs | Serbian_Latin |
+| sv | sv-se | Swedish |
+| th | th-th | Thai |
+| tr | tr-tr | Turkish |
+| uk | uk-ua | Ukrainian |
+| cn | zh-cn | ChnSimp |
+| tw | zh-tw | ChnTrad |
+| hk | zh-hk | ChnTrad_Hong_Kong |
 
 </details>
 
@@ -435,8 +550,8 @@ bash reinstall.sh windows \
 <summary>以下网站可找到 ISO 链接</summary>
 
 - 正式版
-  - <https://msdl.gravesoft.dev>
-  - <https://massgrave.dev/genuine-installation-media>
+  - <https://ntriver.org/download-windows-office> (推荐，ISO 是最新版)
+  - <https://massgrave.dev/genuine-installation-media> (推荐，ISO 是最新版)
   - <https://next.itellyou.cn>
   - <https://www.xitongku.com>
   - <https://www.microsoft.com/software-download/windows10> (需用非 Windows User-Agent 打开)
@@ -467,15 +582,16 @@ bash reinstall.sh windows \
 - `--add-driver INF_OR_DIR` 添加额外驱动，填写 .inf 路径，或者 .inf 所在的文件夹
   - 需先下载驱动到当前系统
   - 可多次设置该参数以添加不同的驱动
+- `--no-auto-drivers` 禁止脚本自动下载驱动，你需要用 `--add-driver` 补全驱动
 - `--frpc-config PATH` 添加 frpc 内网穿透，参数填配置文件的本地路径或 HTTP 链接
 - `--hold 1` 仅重启到安装环境，不运行安装，用于 SSH 登录验证网络连通性
 - `--hold 2` 用于在进入 Windows 官方安装程序之前，SSH 登录修改 `boot.wim`、`install.wim` 或者其它内容，硬盘挂载在 `/os`
 
-#### 以下驱动会自动按需下载安装，无需手动添加
+#### 以下驱动会自动按需下载安装，使用 `--no-auto-drivers` 可禁止此功能
 
-- VirtIO ([社区版][virtio-virtio], [阿里云][virtio-aliyun], [腾讯云][virtio-qcloud], [GCP][virtio-gcp])
+- VirtIO ([社区版][virtio-virtio], [阿里云][virtio-aliyun], [腾讯云][virtio-qcloud], [GCP][virtio-gcp], [GCP (Win7/2008 SHA-1)][virtio-gcp-win6.1sha1])
 - XEN ([~~社区版~~][xen-xen] (未签名), [Citrix][xen-citrix], [AWS][xen-aws])
-- AWS ([ENA 网卡][aws-ena], [NVME 存储控制器][aws-nvme])
+- AWS ([ENA 网卡][aws-ena], [NVMe 存储控制器][aws-nvme], [VMClock 虚拟时钟][aws-vmclock], [PCI 串口][aws-pciserial])
 - GCP ([gVNIC 网卡][gcp-gvnic], [GGA 显卡][gcp-gga])
 - Azure ([MANA 网卡][azure-mana])
 - Intel (VMD 存储控制器: [11代酷睿][intel-vmd-gen11], [12-15代酷睿][intel-vmd-gen12-to-gen15], [酷睿 Ultra 3][intel-vmd-ultra3], 网卡: [7][intel-nic-7], [8.x][intel-nic-8.1], [10][intel-nic-10], [11][intel-nic-11], [2008 R2][intel-nic-7], [2012][intel-nic-2012], [2012 R2][intel-nic-2012-r2], [2016][intel-nic-2016], [2019][intel-nic-2019], [2022][intel-nic-2022], [2025][intel-nic-2025])
@@ -483,14 +599,17 @@ bash reinstall.sh windows \
 [virtio-virtio]: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/
 [virtio-aliyun]: https://www.alibabacloud.com/help/ecs/user-guide/install-the-virtio-driver-1
 [virtio-qcloud]: https://cloud.tencent.com/document/product/213/17815#b84b2032-752c-43c4-a509-73530b8f82ff
-[virtio-gcp]: https://console.cloud.google.com/storage/browser/gce-windows-drivers-public
-[xen-xen]: https://xenproject.org/resources/downloads/
+[virtio-gcp]: https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable/index
+[virtio-gcp-win6.1sha1]: https://console.cloud.google.com/storage/browser/gce-windows-drivers-public/win6.1sha1
+[xen-xen]: https://xenbits.xenproject.org/pvdrivers/win/
 [xen-aws]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/xen-drivers-overview.html
 [xen-citrix]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Upgrading_PV_drivers.html#win2008-citrix-upgrade
 [aws-ena]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ena-driver-releases-windows.html
 [aws-nvme]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nvme-driver-version-history.html
-[gcp-gvnic]: https://cloud.google.com/compute/docs/networking/using-gvnic
-[gcp-gga]: https://cloud.google.com/compute/docs/instances/enable-instance-virtual-display
+[aws-vmclock]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/other-windows-device-drivers.html
+[aws-pciserial]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/migrating-latest-types.html#install-serial-port-bare-metal
+[gcp-gvnic]: https://packages.cloud.google.com/yuck/repos/google-compute-engine-driver-gvnic-stable/index
+[gcp-gga]: https://packages.cloud.google.com/yuck/repos/google-compute-engine-driver-gga-stable/index
 [azure-mana]: https://learn.microsoft.com/azure/virtual-network/accelerated-networking-mana-windows
 [intel-vmd-gen11]: https://www.intel.com/content/www/us/en/download/849933/intel-rapid-storage-technology-driver-installation-software-with-intel-optane-memory-12th-to-13th-gen-platforms.html
 [intel-vmd-gen12-to-gen15]: https://www.intel.com/content/www/us/en/download/849936/intel-rapid-storage-technology-driver-installation-software-with-intel-optane-memory-12th-to-15th-gen-platforms.html
@@ -512,15 +631,6 @@ bash reinstall.sh windows \
 
 可以用 DISM、DISM++、Wimlib 等工具查询 ISO 包含的映像名称
 
-常用的映像名称有：
-
-```text
-Windows 7 Ultimate
-Windows 11 Pro
-Windows 11 Enterprise LTSC 2024
-Windows Server 2025 SERVERDATACENTER
-```
-
 #### 如何用 [DISM++](https://github.com/Chuyu-Team/Dism-Multi-language/releases) 查询 ISO 包含的映像名称
 
 打开文件菜单 > 打开映像文件，选择要安装的 iso，即可得到映像名称，所有映像名称都可以安装
@@ -528,15 +638,15 @@ Windows Server 2025 SERVERDATACENTER
 ![image-name](https://github.com/bin456789/reinstall/assets/7548515/5aae0a9b-61e2-4f66-bb98-d470a6beaac2)
 
 > [!WARNING]
-> Vista (Server 2008) 和 32 位系统可能会缺少驱动
+> Vista、Server 2008 和 32 位系统可能会缺少驱动
 
 > [!WARNING]
 >
-> 安装 Windows 7 (Server 2008 R2) 时
+> 安装 Vista、7、Server 2008、Server 2008 R2 时
 >
 > 1. EFI 引导的机器要开启 CSM
 >
-> 2. Hyper-V (Azure) 需选择第 1 代虚拟机 <https://learn.microsoft.com/windows-server/virtualization/hyper-v/plan/should-i-create-a-generation-1-or-2-virtual-machine-in-hyper-v>
+> 2. Hyper-V / Azure 需选择第 1 代虚拟机
 
 > [!WARNING]
 >
@@ -556,7 +666,7 @@ Windows Server 2025 SERVERDATACENTER
 
 #### ARM 安装 Windows 的注意事项
 
-大部分 ARM 机器都支持安装最新版 Windows 11
+大部分 ARM 云服务器支持安装 Windows 11
 
 安装过程可能会黑屏，串行控制台可能会显示 `ConvertPages: failed to find range`，均不影响正常安装
 
@@ -587,8 +697,8 @@ bash reinstall.sh reset
 - `--ssh-key "ssh-ed25519 ..."`
 - `--ssh-key "ecdsa-sha2-nistp256/384/521 ..."`
 - `--ssh-key http://path/to/public_key`
-- `--ssh-key github:your_username`
-- `--ssh-key gitlab:your_username`
+- `--ssh-key github:your_username` 或 `--ssh-key gh:your_username`
+- `--ssh-key gitlab:your_username` 或 `--ssh-key gl:your_username`
 - `--ssh-key /path/to/public_key`
 - `--ssh-key C:\path\to\public_key`
 
