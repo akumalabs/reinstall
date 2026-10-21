@@ -1,33 +1,31 @@
 #!/usr/bin/env bash
 # ============================================================
 #  AKUMA PVE Bootstrap — auto install Proxmox VE di atas Debian 13
-#  + auto setup RAID (mdadm RAID1/10 atau ZFS mirror/RAIDZ1)
-#
-#  Dijalankan otomatis di FIRST BOOT Debian 13 baru (via cloud-init),
-#  config dibaca dari /root/akuma-pve.conf (ditulis oleh wizard kernel.sh)
+#  Dijalankan otomatis di FIRST BOOT (via cloud-init runcmd), SETELAH
+#  akuma-raid-setup.sh selesai (urutan dijamin oleh kernel.sh).
+#  Config: /root/akuma-raid.conf
 # ============================================================
 
 set -u
 
-CONF=/root/akuma-pve.conf
+CONF=/root/akuma-raid.conf
 LOG=/root/akuma-pve-setup.log
 DONE_MARKER=/root/.akuma-pve-done
 
-# kalau udah pernah sukses, jangan jalan lagi
 [ -f "$DONE_MARKER" ] && exit 0
+[ -f "$CONF" ] || exit 0
 
 exec > >(tee -a "$LOG") 2>&1
 
-step()  { echo -e "\n[AKUMA] [$(date '+%F %T')] $*"; }
-fatal() { echo "[AKUMA][FATAL] $*" | tee -a "$LOG"; exit 1; }
+step()  { echo "[AKUMA-PVE][$(date '+%F %T')] $*"; }
+fatal() { echo "[AKUMA-PVE][FATAL] $*"; exit 1; }
 
-step "AKUMA PVE Bootstrap mulai"
-
-[ -f "$CONF" ] || fatal "config $CONF tidak ditemukan"
 # shellcheck disable=SC1090
 source "$CONF"
 
 export DEBIAN_FRONTEND=noninteractive
+
+step "AKUMA PVE Bootstrap mulai (hostname=$AKUMA_HOSTNAME)"
 
 APT() { apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold "$@"; }
 
@@ -42,53 +40,7 @@ ${_ip:-127.0.1.1} $AKUMA_HOSTNAME $_short
 EOF
 hostnamectl set-hostname "$AKUMA_HOSTNAME" 2>/dev/null || echo "$AKUMA_HOSTNAME" > /etc/hostname
 
-# ---------- 2. RAID (sebelum install PVE) ----------
-if [ "$AKUMA_RAID_TECH" != "none" ]; then
-    [ -n "${AKUMA_RAID_DISKS:-}" ] || fatal "AKUMA_RAID_DISKS kosong"
-    step "Setup RAID: tech=$AKUMA_RAID_TECH level=${AKUMA_RAID_LEVEL:-auto} disks=$AKUMA_RAID_DISKS"
-
-    if [ "$AKUMA_RAID_TECH" = "mdadm" ]; then
-        step "Install mdadm + lvm2"
-        APT update
-        APT install mdadm lvm2
-
-        _ndev=$(echo $AKUMA_RAID_DISKS | wc -w)
-        step "Buat array /dev/md0 (level=$AKUMA_RAID_LEVEL, devices=$_ndev)"
-        # yes Y untuk jawab otomatis kalau disk ternyata masih ada metadata lama
-        yes Y | mdadm --create --run /dev/md0 --level="$AKUMA_RAID_LEVEL" \
-            --raid-devices="$_ndev" $AKUMA_RAID_DISKS \
-            || fatal "mdadm --create gagal"
-
-        # pastikan array auto-assemble saat boot
-        mdadm --detail --scan >> /etc/mdadm/mdadm.conf
-        update-initramfs -u
-
-        step "Setup LVM-thin di atas /dev/md0"
-        pvcreate -f /dev/md0
-        vgcreate akuma-data /dev/md0
-        # sisa ~10% biar thin pool bisa di-trim
-        lvcreate -l 90%FREE -T akuma-data/thin
-        RAID_STORAGE_OK=1
-    fi
-
-    if [ "$AKUMA_RAID_TECH" = "zfs" ]; then
-        step "Install zfsutils-linux"
-        APT update
-        APT install zfsutils-linux
-        modprobe zfs 2>/dev/null
-
-        step "Buat pool akuma-tank ($AKUMA_RAID_LEVEL)"
-        zpool create -o ashift=12 -O compression=lz4 -m none akuma-tank \
-            "$AKUMA_RAID_LEVEL" $AKUMA_RAID_DISKS \
-            || fatal "zpool create gagal"
-        RAID_STORAGE_OK=1
-    fi
-else
-    step "RAID dilewati (single disk / none)"
-    RAID_STORAGE_OK=0
-fi
-
-# ---------- 3. Repo PVE (Debian 13 = trixie = PVE 9.x) ----------
+# ---------- 2. Repo PVE (Debian 13 = trixie) ----------
 step "Tambah repo Proxmox VE pve-no-subscription (trixie)"
 mkdir -p /etc/apt/keyrings
 wget -qO /etc/apt/keyrings/proxmox-release-trixie.gpg \
@@ -98,14 +50,14 @@ chmod +r /etc/apt/keyrings/proxmox-release-trixie.gpg
 echo "deb [signed-by=/etc/apt/keyrings/proxmox-release-trixie.gpg] http://download.proxmox.com/debian/pve trixie pve-no-subscription" \
     > /etc/apt/sources.list.d/akuma-pve.list
 
-step "apt update + full-upgrade (bisa lumayan lama)"
+step "apt update + full-upgrade"
 APT update
 APT full-upgrade
 
 step "Install kernel default PVE"
 APT install proxmox-default-kernel
 
-# ---------- 4. Network: vmbr0 (bridge PVE) ----------
+# ---------- 3. Network: vmbr0 ----------
 step "Konfigurasi ifupdown + bridge vmbr0"
 APT install ifupdown
 
@@ -115,7 +67,6 @@ _addr=$(ip -4 addr show "$_nic" | awk '/inet /{print $2; exit}')
 _gw=$(ip -4 route show default | awk '{print $3; exit}')
 [ -n "$_addr" ] && [ -n "$_gw" ] || fatal "gagal baca IP/gateway dari $_nic"
 
-# cloud-init jangan otak-atik network lagi (biar vmbr0 aman)
 if [ -d /etc/cloud ]; then
     echo 'network: {config: disabled}' > /etc/cloud/cloud.cfg.d/99-akuma-disable-network.cfg
 fi
@@ -137,14 +88,14 @@ iface vmbr0 inet static
     bridge-stp off
     bridge-fd 0
 EOF
-echo "vmbr0: $_addr via $_nic (gw $_gw)"
+step "vmbr0: $_addr via $_nic (gw $_gw)"
 
-# ---------- 5. Install Proxmox VE ----------
-step "Install proxmox-ve (ini yang paling lama, sabar ya)"
+# ---------- 4. Install Proxmox VE ----------
+step "Install proxmox-ve (paling lama, sabar)"
 echo "postfix postfix/main_mailer_type select No configuration" | debconf-set-selections
 APT install proxmox-ve postfix open-iscsi
 
-step "Matikan repo enterprise (butuh subscription)"
+step "Matikan repo enterprise"
 for f in /etc/apt/sources.list.d/pve-enterprise.list \
          /etc/apt/sources.list.d/pve-enterprise.sources \
          /etc/apt/sources.list.d/ceph.list; do
@@ -152,17 +103,19 @@ for f in /etc/apt/sources.list.d/pve-enterprise.list \
 done
 APT update
 
-# ---------- 6. Registrasi storage hasil RAID ----------
-if [ "${RAID_STORAGE_OK:-0}" = "1" ]; then
-    step "Daftarkan storage ke PVE"
-    if [ "$AKUMA_RAID_TECH" = "mdadm" ]; then
-        pvesm add lvmthin akuma-thin --vgname akuma-data --thinpool thin
-    else
-        pvesm add zfspool akuma-zfs --pool akuma-tank
-    fi
+# ---------- 5. Registrasi storage hasil RAID ----------
+step "Registrasi storage ke PVE"
+if [ "${AKUMA_RAID_TECH:-none}" = "mdadm" ] && [ "${AKUMA_RAID_FS:-}" = "lvmthin" ]; then
+    pvesm add lvmthin akuma-thin --vgname akuma-data --thinpool thin \
+        || step "WARN: registrasi akuma-thin gagal (cek manual)"
+elif [ "${AKUMA_RAID_TECH:-none}" = "zfs" ]; then
+    pvesm add zfspool akuma-zfs --pool akuma-tank \
+        || step "WARN: registrasi akuma-zfs gagal (cek manual)"
+else
+    step "Tidak ada storage RAID khusus (mdadm non-PVE: /mnt/akuma-data, zfs: pool akuma-tank)"
 fi
 
-# ---------- 7. Selesai ----------
+# ---------- 6. Selesai ----------
 touch "$DONE_MARKER"
 cat <<'EOM'
 
@@ -176,7 +129,8 @@ cat <<'EOM'
  Setelah reboot:
    - Web UI   : https://<IP-SERVER>:8006  (user: root)
    - Password : sama dengan password SSH
-   - Log setup: /root/akuma-pve-setup.log
+   - Log RAID : /root/akuma-raid-setup.log
+   - Log PVE  : /root/akuma-pve-setup.log
 ============================================================
 EOM
 exit 0
