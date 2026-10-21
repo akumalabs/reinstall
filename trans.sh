@@ -3951,7 +3951,14 @@ EOF
         find_and_mount /boot
         find_and_mount /boot/efi
 
-        remove_or_disable_cloud_init $os_dir
+        # AKUMA: with --cloud-data, keep cloud-init enabled so user-data
+        # (runcmd: akuma-pve-setup.sh) runs on first boot of the new OS.
+        # Normal path (no cloud-data) removes/disables cloud-init as before.
+        if [ ! -d /configs/cloud-data ]; then
+            remove_or_disable_cloud_init $os_dir
+        else
+            info "AKUMA: cloud-data present — keeping cloud-init for first-boot runcmd"
+        fi
 
         # 获取当前开启的 Components, 后面要用
         if [ -f $os_dir/etc/apt/sources.list.d/debian.sources ]; then
@@ -8727,7 +8734,12 @@ trans() {
                 # debian fedora opensuse arch gentoo any
                 dd_qcow
                 resize_after_install_cloud_image
-                modify_os_on_disk linux
+                # AKUMA: support --cloud-data for cloud-image mode (e.g. Debian genericcloud)
+                if [ -d /configs/cloud-data ] && [ "$distro" = debian ]; then
+                    modify_os_on_disk nocloud
+                else
+                    modify_os_on_disk linux
+                fi
                 ;;
             esac
             ;;
