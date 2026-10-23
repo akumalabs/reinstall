@@ -61,19 +61,30 @@ fetch() { # fetch <url> <outfile>
 
 ask() { # ask <pertanyaan> <default> → jawaban di $REPLY
   local q="$1" def="${2:-}"
-  if [ -n "$def" ]; then
-    read -r -p "$(echo -e "${C_B}?${C_N} ${q} ${C_Y}[${def}]${C_N}: ")" REPLY
-    REPLY="${REPLY:-$def}"
+  # curl|bash safe: input interaktif WAJIB dari terminal (/dev/tty), bukan stdin
+  if [ -t 0 ]; then
+    read -r -p "$(echo -e "${C_B}?${C_N} ${q}${def:+ ${C_Y}[${def}]${C_N}}: ")" REPLY
   else
-    read -r -p "$(echo -e "${C_B}?${C_N} ${q}: ")" REPLY
+    read -r -p "$(echo -e "${C_B}?${C_N} ${q}${def:+ ${C_Y}[${def}]${C_N}}: ")" REPLY </dev/tty || die "Tidak ada terminal untuk input. Jalankan: bash kernel.sh"
   fi
+  REPLY="${REPLY:-$def}"
 }
 
 ask_password() { # dua kali ketik → $REPLY
   while :; do
-    read -r -s -p "$(echo -e "${C_B}?${C_N} Password: ")" p1; echo
+    if [ -t 0 ]; then
+      read -r -s -p "$(echo -e "${C_B}?${C_N} Password: ")" p1
+    else
+      read -r -s -p "$(echo -e "${C_B}?${C_N} Password: ")" p1 </dev/tty || die "Tidak ada terminal untuk input."
+    fi
+    echo
     if [ "${#p1}" -lt 6 ]; then warn "Minimal 6 karakter, ulangi."; continue; fi
-    read -r -s -p "$(echo -e "${C_B}?${C_N} Ulangi password: ")" p2; echo
+    if [ -t 0 ]; then
+      read -r -s -p "$(echo -e "${C_B}?${C_N} Ulangi password: ")" p2
+    else
+      read -r -s -p "$(echo -e "${C_B}?${C_N} Ulangi password: ")" p2 </dev/tty || die "Tidak ada terminal untuk input."
+    fi
+    echo
     if [ "$p1" != "$p2" ]; then warn "Password tidak sama, ulangi."; continue; fi
     REPLY="$p1"; break
   done
@@ -81,7 +92,11 @@ ask_password() { # dua kali ketik → $REPLY
 
 confirm() { # confirm <pertanyaan> → return 0 kalau y
   local yn
-  read -r -p "$(echo -e "${C_R}?${C_N} $1 [y/N]: ")" yn
+  if [ -t 0 ]; then
+    read -r -p "$(echo -e "${C_R}?${C_N} $1 [y/N]: ")" yn
+  else
+    read -r -p "$(echo -e "${C_R}?${C_N} $1 [y/N]: ")" yn </dev/tty || return 1
+  fi
   case "$yn" in [yY][eE][sS]|[yY]) return 0 ;; *) return 1 ;; esac
 }
 
@@ -114,7 +129,11 @@ list_disk_raid() {
   echo ""
   while :; do
     local min_n=$1
-    read -r -p "$(echo -e "${C_B}?${C_N} Disk RAID (min $min_n, pisah spasi): ")" -a disks_in
+    if [ -t 0 ]; then
+      read -r -p "$(echo -e "${C_B}?${C_N} Disk RAID (min $min_n, pisah spasi): ")" -a disks_in
+    else
+      read -r -p "$(echo -e "${C_B}?${C_N} Disk RAID (min $min_n, pisah spasi): ")" -a disks_in </dev/tty || die "Tidak ada terminal untuk input."
+    fi
     RAID_DISKS=""
     for d in "${disks_in[@]}"; do
       d="${d#/dev/}"
@@ -171,6 +190,7 @@ echo "   0) Exit"
 echo ""
 ask "Your option" ""
 N="$REPLY"
+[ -n "$N" ] || die "Pilihan tidak boleh kosong"
 
 USERNAME_DEFAULT="root"; PORT_LABEL="SSH"; PORT_DEFAULT="22"
 WINIMG=""; WINISO=""; DDIMG=""
