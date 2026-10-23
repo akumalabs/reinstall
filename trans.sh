@@ -3924,7 +3924,12 @@ EOF
         if [ "$distro" = fedora ] && [ "$releasever" = 43 ]; then
             chroot $os_dir dnf mark user netcat -y
         fi
-        remove_or_disable_cloud_init $os_dir
+        # AKUMA: with --cloud-data, keep cloud-init for first-boot runcmd
+        if [ ! -d /configs/cloud-data ]; then
+            remove_or_disable_cloud_init $os_dir
+        else
+            info "AKUMA: cloud-data present — keeping cloud-init for first-boot runcmd"
+        fi
 
         disable_selinux $os_dir
         disable_kdump $os_dir
